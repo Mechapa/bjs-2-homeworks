@@ -20,10 +20,36 @@ function cachingDecoratorNew(func) {
 }
 
 
-function debounceDecoratorNew(func) {
-  // Ваш код
-}
+function debounceDecoratorNew(f, ms) {
+  let timeout;
+  let isThrottled = false;
+  return function(...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+        f.apply(this, args);
+    }, ms);
+    if (!isThrottled) {
+      isThrottled = true;
+      return f.apply(this, args);
+    }
+  }
+} 
 
-function debounceDecorator2(func) {
-  // Ваш код
-}
+
+function debounceDecorator2(f, ms) {
+  let timeout;
+  let isThrottled = false;
+  let debounceCount = 0;
+  return function(...args) {
+    debounceCount++;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+        f.apply(this, args);
+    }, ms);
+    console.log(debounceCount);
+    if (!isThrottled) {
+      isThrottled = true;
+      return f.apply(this, args);
+    }
+  }
+} 
