@@ -38,17 +38,18 @@ function debounceDecoratorNew(f, ms) {
 function debounceDecorator2(f, ms) {
   let timeout;
   let isThrottled = false;
-  let debounceCount = 0;
-  return function(...args) {
-    debounceCount++;
+  wrapper.debounceCount = 0;
+  function wrapper(...args) {
+    wrapper.debounceCount++;
     clearTimeout(timeout);
     timeout = setTimeout(() => {
         f.apply(this, args);
     }, ms);
-    console.log(debounceCount);
+    console.log(wrapper.debounceCount);
     if (!isThrottled) {
       isThrottled = true;
       return f.apply(this, args);
     }
   }
+  return wrapper;
 } 
